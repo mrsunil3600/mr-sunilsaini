@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿# ✨ Senior Engineer Portfolio
 
 > A stunning, modern portfolio frontend with immersive 3D animations and smooth interactions. Powered by cutting-edge web technologies.
@@ -192,3 +193,7 @@ This project is open source and available under the MIT License.
 [GitHub](https://github.com) • [Portfolio](https://portfolio.example.com) • [LinkedIn](https://linkedin.com)
 
 </div>
+=======
+# mr-sunilsaini
+3d PortFolio for Software devloper
+>>>>>>> fb142f9398bcebb45a8cc5ab624641cd6cfe5f9e
