@@ -1,0 +1,12 @@
+﻿.git
+.gitignore
+.next
+node_modules
+npm-debug.log*
+*.log
+coverage
+.vscode
+.idea
+README.md
+dev-*.out.log
+dev-*.err.log
