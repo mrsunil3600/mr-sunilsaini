@@ -150,7 +150,7 @@ export const FALLBACK_CONTENT: PortfolioContent = {
       tools: ["AWS", "Docker", "Kubernetes", "GitHub Actions", "Terraform"]
     }
   ],
-  achievements: [
+  achievements: [ 
     {
       title: "AWS Certified Solutions Architect - Associate",
       issuer: "Amazon Web Services",
