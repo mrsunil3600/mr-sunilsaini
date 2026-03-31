@@ -26,20 +26,22 @@ export const ProjectsSection = ({ projects }: ProjectsSectionProps) => {
             <motion.article
               whileHover={{ y: -8, scale: 1.01 }}
               transition={{ type: "spring", stiffness: 260, damping: 20 }}
-              className="glass-panel group relative h-full rounded-3xl p-5 sm:p-6"
+              className="cyber-panel group relative h-full rounded-3xl p-5 sm:p-6"
             >
               <div className="absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-accent-300/80 to-transparent opacity-0 transition group-hover:opacity-100" />
 
               <div className="space-y-4">
                 <h3 className="font-display text-xl font-semibold text-white">{project.name}</h3>
                 <p className="text-sm text-slate-300">{project.description}</p>
-                <p className="rounded-xl border border-mint-400/25 bg-mint-500/10 px-3 py-2 text-sm text-mint-300">{project.impact}</p>
+                <p className="rounded-xl border border-mint-400/30 bg-gradient-to-r from-mint-500/20 to-accent-500/16 px-3 py-2 text-sm text-mint-300">
+                  {project.impact}
+                </p>
 
                 <div className="flex flex-wrap gap-2">
                   {project.stack.map((tech) => (
                     <span
                       key={tech}
-                      className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-slate-300"
+                      className="cyber-chip rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-slate-200"
                     >
                       {tech}
                     </span>
@@ -52,7 +54,7 @@ export const ProjectsSection = ({ projects }: ProjectsSectionProps) => {
                   href={project.repoUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/15 px-3 py-2 text-xs text-slate-200 transition hover:border-accent-300/60 hover:text-white"
+                  className="inline-flex items-center gap-2 rounded-full border border-accent-300/35 bg-accent-500/10 px-3 py-2 text-xs text-slate-200 transition hover:border-accent-300/60 hover:text-white"
                 >
                   <Github size={14} />
                   Code
@@ -61,7 +63,7 @@ export const ProjectsSection = ({ projects }: ProjectsSectionProps) => {
                   href={project.liveUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-accent-400/35 bg-accent-500/12 px-3 py-2 text-xs text-accent-200 transition hover:bg-accent-500/25"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-500/75 via-accent-500/70 to-mint-500/70 px-3 py-2 text-xs font-medium text-slate-100 transition hover:brightness-110"
                 >
                   <ArrowUpRight size={14} />
                   Live Preview

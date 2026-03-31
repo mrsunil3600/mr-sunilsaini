@@ -27,7 +27,7 @@ export default function HomePage() {
       <FloatingNav items={content.navItems} />
 
       {isLoading ? (
-        <div className="fixed bottom-4 right-4 z-50 rounded-full border border-white/15 bg-ink-900/90 px-4 py-2 text-xs text-slate-300 backdrop-blur">
+        <div className="cyber-panel fixed bottom-4 right-4 z-50 rounded-full px-4 py-2 text-xs text-slate-300">
           Syncing content...
         </div>
       ) : null}

@@ -1,6 +1,9 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { useInView } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 
 import { Profile } from "@/types/portfolio";
@@ -19,6 +22,19 @@ type AboutSectionProps = {
 };
 
 export const AboutSection = ({ profile, about }: AboutSectionProps) => {
+  const sceneContainerRef = useRef<HTMLDivElement>(null);
+  const isSceneInView = useInView(sceneContainerRef, { once: true, margin: "220px 0px" });
+  const [shouldMountAvatar, setShouldMountAvatar] = useState(false);
+
+  useEffect(() => {
+    if (!isSceneInView || shouldMountAvatar) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => setShouldMountAvatar(true), 120);
+    return () => window.clearTimeout(timeoutId);
+  }, [isSceneInView, shouldMountAvatar]);
+
   return (
     <SectionShell
       id="about"
@@ -27,7 +43,7 @@ export const AboutSection = ({ profile, about }: AboutSectionProps) => {
       description={profile.summary}
     >
       <div className="grid items-stretch gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <Reveal className="glass-panel rounded-3xl p-6 sm:p-8">
+        <Reveal className="cyber-panel rounded-3xl p-6 sm:p-8">
           <div className="space-y-5 text-sm leading-relaxed text-slate-300 sm:text-base">
             {about.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
@@ -35,11 +51,11 @@ export const AboutSection = ({ profile, about }: AboutSectionProps) => {
           </div>
 
           <div className="mt-7 grid gap-3 sm:grid-cols-2">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-4">
+            <div className="cyber-panel rounded-2xl p-4">
               <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Experience</p>
               <p className="mt-2 font-display text-xl font-semibold text-white">{profile.yearsExperience}</p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-4">
+            <div className="cyber-panel rounded-2xl p-4">
               <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Location</p>
               <p className="mt-2 font-display text-xl font-semibold text-white">{profile.location}</p>
             </div>
@@ -61,11 +77,30 @@ export const AboutSection = ({ profile, about }: AboutSectionProps) => {
           </ul>
         </Reveal>
 
-        <Reveal className="glass-panel rounded-3xl border-accent-300/25 p-4 sm:p-6" delay={0.08}>
-          <div className="h-[340px] w-full overflow-hidden rounded-2xl bg-gradient-to-b from-white/[0.06] to-transparent sm:h-[420px]">
-            <AvatarScene />
+        <Reveal className="cyber-panel rounded-3xl p-4 sm:p-6" delay={0.08}>
+          <div
+            ref={sceneContainerRef}
+            className="universe-border h-[340px] w-full overflow-hidden rounded-2xl bg-gradient-to-b from-accent-500/10 via-ink-900/35 to-ink-900/65 sm:h-[420px]"
+          >
+            {isSceneInView && shouldMountAvatar ? (
+              <AvatarScene />
+            ) : (
+              <div className="relative h-full w-full">
+                <Image
+                  src="/my.jpg"
+                  alt={`${profile.name} profile photo`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, 40vw"
+                  priority={false}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
+                <span className="absolute bottom-4 left-4 rounded-full border border-accent-300/35 bg-ink-900/70 px-3 py-1 text-xs text-slate-100">
+                  Loading 3D model...
+                </span>
+              </div>
+            )}
           </div>
-          <p className="mt-4 px-2 text-center text-xs text-slate-400 sm:text-sm">3D placeholder avatar (replaceable with your custom model later).</p>
         </Reveal>
       </div>
     </SectionShell>

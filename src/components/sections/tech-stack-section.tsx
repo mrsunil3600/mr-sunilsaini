@@ -19,13 +19,13 @@ export const TechStackSection = ({ techStack }: TechStackSectionProps) => {
     >
       <div className="grid gap-5 md:grid-cols-2">
         {techStack.map((group, index) => (
-          <Reveal key={group.category} delay={index * 0.06} className="glass-panel rounded-3xl p-5 sm:p-6">
+          <Reveal key={group.category} delay={index * 0.06} className="cyber-panel rounded-3xl p-5 sm:p-6">
             <h3 className="font-display text-lg font-semibold text-white">{group.category}</h3>
             <div className="mt-4 flex flex-wrap gap-2">
               {group.tools.map((tool) => (
                 <span
                   key={tool}
-                  className="rounded-full border border-white/12 bg-white/[0.03] px-3 py-1.5 text-xs font-medium tracking-wide text-slate-200 uppercase"
+                  className="cyber-chip rounded-full px-3 py-1.5 text-xs font-medium tracking-wide text-slate-200 uppercase"
                 >
                   {tool}
                 </span>

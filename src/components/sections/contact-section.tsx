@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, ReactNode, useState } from "react";
+import { ChangeEvent, FormEvent, ReactNode, useState } from "react";
 import { Github, Linkedin, Mail, Send } from "lucide-react";
 
 import { API_CONFIG } from "@/config/endpoints";
@@ -14,6 +14,18 @@ type ContactSectionProps = {
   socials: SocialLink[];
 };
 
+type ContactFormValues = {
+  name: string;
+  email: string;
+  message: string;
+};
+
+const initialFormValues: ContactFormValues = {
+  name: "",
+  email: "",
+  message: ""
+};
+
 const iconMap: Record<string, ReactNode> = {
   GitHub: <Github size={16} />,
   LinkedIn: <Linkedin size={16} />,
@@ -21,11 +33,52 @@ const iconMap: Record<string, ReactNode> = {
 };
 
 export const ContactSection = ({ profile, socials }: ContactSectionProps) => {
-  const [status, setStatus] = useState<string>("Frontend only: wire this form to your backend contact endpoint.");
+  const [values, setValues] = useState<ContactFormValues>(initialFormValues);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<string>("Send me a message and I will reply soon.");
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onChange = (field: keyof ContactFormValues) => {
+    return (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setValues((current) => ({
+        ...current,
+        [field]: event.target.value
+      }));
+    };
+  };
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setStatus("Submission captured on frontend. Connect backend URL and API handler for live messages.");
+
+    if (isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setStatus("Sending your message...");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(values)
+      });
+
+      const result = (await response.json()) as { ok?: boolean; message?: string };
+
+      if (!response.ok || !result.ok) {
+        throw new Error(result.message ?? "Unable to send message right now.");
+      }
+
+      setStatus(result.message ?? "Message sent successfully.");
+      setValues(initialFormValues);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unable to send message right now.";
+      setStatus(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -36,7 +89,7 @@ export const ContactSection = ({ profile, socials }: ContactSectionProps) => {
       description="Open to impactful product engineering challenges, platform modernization programs, and senior architecture roles."
     >
       <div className="grid gap-6 lg:grid-cols-[1fr_0.95fr]">
-        <Reveal className="glass-panel rounded-3xl p-6 sm:p-7">
+        <Reveal className="cyber-panel rounded-3xl p-6 sm:p-7">
           <div className="space-y-4">
             <p className="text-sm text-slate-300 sm:text-base">Reach out for collaborations, consulting, or full-time opportunities.</p>
             <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 text-accent-300 transition hover:text-accent-200">
@@ -52,16 +105,22 @@ export const ContactSection = ({ profile, socials }: ContactSectionProps) => {
                 Name
                 <input
                   type="text"
+                  required
                   placeholder="Your name"
-                  className="w-full rounded-xl border border-white/12 bg-white/[0.03] px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-accent-300/60"
+                  value={values.name}
+                  onChange={onChange("name")}
+                  className="w-full rounded-xl border border-accent-300/25 bg-ink-900/55 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-accent-300/60"
                 />
               </label>
               <label className="space-y-2 text-xs uppercase tracking-[0.15em] text-slate-400">
                 Email
                 <input
                   type="email"
+                  required
                   placeholder="you@company.com"
-                  className="w-full rounded-xl border border-white/12 bg-white/[0.03] px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-accent-300/60"
+                  value={values.email}
+                  onChange={onChange("email")}
+                  className="w-full rounded-xl border border-accent-300/25 bg-ink-900/55 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-accent-300/60"
                 />
               </label>
             </div>
@@ -70,16 +129,20 @@ export const ContactSection = ({ profile, socials }: ContactSectionProps) => {
               Message
               <textarea
                 rows={5}
+                required
                 placeholder="Tell me about your product or platform challenge..."
-                className="w-full rounded-xl border border-white/12 bg-white/[0.03] px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-accent-300/60"
+                value={values.message}
+                onChange={onChange("message")}
+                className="w-full rounded-xl border border-accent-300/25 bg-ink-900/55 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-accent-300/60"
               />
             </label>
 
             <button
               type="submit"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-accent-500 to-mint-500 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:shadow-glow"
+              disabled={isSubmitting}
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-500 via-accent-500 to-mint-500 px-5 py-2.5 text-sm font-semibold text-slate-100 transition hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:shadow-none"
             >
-              Send Message
+              {isSubmitting ? "Sending..." : "Send Message"}
               <Send size={15} />
             </button>
 
@@ -87,7 +150,7 @@ export const ContactSection = ({ profile, socials }: ContactSectionProps) => {
           </form>
         </Reveal>
 
-        <Reveal className="glass-panel rounded-3xl p-6 sm:p-7" delay={0.08}>
+        <Reveal className="cyber-panel rounded-3xl p-6 sm:p-7" delay={0.08}>
           <h3 className="font-display text-xl font-semibold text-white">Social Links</h3>
           <div className="mt-5 space-y-3">
             {socials.map((social) => (
@@ -96,7 +159,7 @@ export const ContactSection = ({ profile, socials }: ContactSectionProps) => {
                 href={social.href}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex items-center justify-between rounded-xl border border-white/12 bg-white/[0.03] px-4 py-3 transition hover:border-accent-300/45 hover:bg-accent-500/10"
+                className="group flex items-center justify-between rounded-xl border border-accent-300/25 bg-accent-500/10 px-4 py-3 transition hover:border-accent-300/45 hover:bg-accent-500/18"
               >
                 <span className="inline-flex items-center gap-2 text-sm text-slate-200">
                   {iconMap[social.label]}
@@ -107,7 +170,7 @@ export const ContactSection = ({ profile, socials }: ContactSectionProps) => {
             ))}
           </div>
 
-          <div className="mt-6 rounded-2xl border border-white/10 bg-ink-950/60 p-4">
+          <div className="mt-6 rounded-2xl border border-accent-300/20 bg-ink-950/60 p-4">
             <p className="text-xs uppercase tracking-[0.15em] text-slate-500">Configured Data Endpoints</p>
             <ul className="mt-3 space-y-2 text-xs text-slate-400">
               <li className="truncate">profile: {API_CONFIG.endpoints.profile}</li>

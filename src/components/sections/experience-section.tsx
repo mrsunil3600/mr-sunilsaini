@@ -24,7 +24,7 @@ export const ExperienceSection = ({ experience }: ExperienceSectionProps) => {
 
         {experience.map((item, index) => (
           <Reveal key={`${item.company}-${item.period}`} delay={index * 0.08} className="relative">
-            <article className="glass-panel rounded-3xl p-5 sm:p-6 md:ml-2">
+            <article className="cyber-panel rounded-3xl p-5 sm:p-6 md:ml-2">
               <span className="absolute -left-9 top-7 hidden h-4 w-4 rounded-full border border-accent-300/70 bg-ink-900 shadow-glow md:block" />
 
               <div className="flex flex-wrap items-start justify-between gap-4">
@@ -51,7 +51,7 @@ export const ExperienceSection = ({ experience }: ExperienceSectionProps) => {
 
               <ul className="mt-5 space-y-2">
                 {item.highlights.map((highlight) => (
-                  <li key={highlight} className="rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2 text-sm text-slate-300">
+                  <li key={highlight} className="rounded-xl border border-accent-300/20 bg-gradient-to-r from-violet-500/10 to-accent-500/10 px-3 py-2 text-sm text-slate-300">
                     {highlight}
                   </li>
                 ))}

@@ -21,8 +21,8 @@ export const AchievementsSection = ({ achievements }: AchievementsSectionProps) 
     >
       <div className="grid gap-5 lg:grid-cols-3">
         {achievements.map((achievement, index) => (
-          <Reveal key={achievement.title} delay={index * 0.07} className="glass-panel rounded-3xl p-5 sm:p-6">
-            <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-accent-300/35 bg-accent-500/15 text-accent-300">
+          <Reveal key={achievement.title} delay={index * 0.07} className="cyber-panel rounded-3xl p-5 sm:p-6">
+            <div className="cyber-chip inline-flex h-10 w-10 items-center justify-center rounded-xl text-accent-200">
               {index === 0 ? <Award size={18} /> : <BadgeCheck size={18} />}
             </div>
             <h3 className="mt-4 font-display text-lg font-semibold text-white">{achievement.title}</h3>
