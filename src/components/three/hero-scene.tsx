@@ -1,15 +1,26 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { ReactNode, useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Html, OrbitControls, Sparkles } from "@react-three/drei";
 import * as THREE from "three";
+import {
+  SiTypescript,
+  SiSpringboot,
+  SiDocker,
+  SiApachekafka,
+  SiRedis,
+  SiMysql,
+  SiPostman
+} from "react-icons/si";
+import { FaJava, FaAws } from "react-icons/fa6";
 
 import { SiteTheme, useSiteTheme } from "@/hooks/use-site-theme";
 
 type TechNode = {
   label: string;
   position: [number, number, number];
+  icon: ReactNode;
 };
 
 type HeroPalette = {
@@ -22,43 +33,11 @@ type HeroPalette = {
   pointB: string;
   pointSpot: string;
   nodeColors: string[];
-  chipBorder: string;
-  chipBackground: string;
-  chipText: string;
-  chipShadow: string;
+  iconGlow: string;
+  awsColor: string;
+  kafkaColor: string;
+  mysqlColor: string;
 };
-
-const techNodes: TechNode[] = [
-  { label: "TS", position: [2.4, 1.2, 0] },
-  { label: "SpringBoot", position: [-2.2, 0.8, -0.2] },
-  { label: "Cloud", position: [1.9, -1.4, 0.6] },
-  { label: "AI", position: [-1.8, -1.2, 0.5] },
-  { label: "MicroServices", position: [0, 2.2, -0.6] }
-];
-
-// TODO(USER): Change these light theme colors as you like.
-// Use HEX values only (example: #F6EBDD).
-const USER_LIGHT_HERO_COLORS = {
-  core: "#FFFFFF",
-  coreGradientTop: "#FFFFFF",
-  coreGradientMid: "#FFFFFF",
-  coreGradientBottom: "#FFFFFF",
-  coreEmissive: "#FFFFFF",
-  shell: "#FFFFFF",
-  sparkles: "#FFFFFF",
-  pointA: "#FFFFFF",
-  pointB: "#FFFFFF",
-  pointSpot: "#FFFFFF",
-  node1: "#FFFFFF",
-  node2: "#FFFFFF",
-  node3: "#FFFFFF",
-  node4: "#FFFFFF",
-  node5: "#FFFFFF",
-  chipBorder: "rgba(255, 255, 255, 0.72)",
-  chipBackground: "linear-gradient(120deg,rgba(255,255,255,0.55),rgba(255,255,255,0.42))",
-  chipText: "#2F2F2F",
-  chipShadow: "rgba(255,255,255,0.4)"
-} as const;
 
 const palettes: Record<SiteTheme, HeroPalette> = {
   cyber: {
@@ -70,51 +49,40 @@ const palettes: Record<SiteTheme, HeroPalette> = {
     pointA: "#7C52FF",
     pointB: "#00E7FF",
     pointSpot: "#DBE6FF",
-    nodeColors: ["#7AF2FF", "#A284FF", "#8DC2FF", "#6D92FF", "#CEC1FF"],
-    chipBorder: "rgba(141, 194, 255, 0.35)",
-    chipBackground: "linear-gradient(120deg,rgba(124,82,255,0.45),rgba(11,109,255,0.28))",
-    chipText: "#f4f7ff",
-    chipShadow: "rgba(11,109,255,0.28)"
+    nodeColors: ["#7AF2FF", "#A284FF", "#8DC2FF", "#6D92FF", "#CEC1FF", "#FFD36D"],
+    iconGlow: "drop-shadow(0 0 10px rgba(255,255,255,0.22)) drop-shadow(0 0 18px rgba(0,231,255,0.18))",
+    awsColor: "#FFB347",
+    kafkaColor: "#F5F7FF",
+    mysqlColor: "#7FD3FF"
   },
   light: {
-    core: USER_LIGHT_HERO_COLORS.core,
-    coreGradient: [
-      USER_LIGHT_HERO_COLORS.coreGradientTop,
-      USER_LIGHT_HERO_COLORS.coreGradientMid,
-      USER_LIGHT_HERO_COLORS.coreGradientBottom
-    ],
-    coreEmissive: USER_LIGHT_HERO_COLORS.coreEmissive,
-    shell: USER_LIGHT_HERO_COLORS.shell,
-    sparkles: USER_LIGHT_HERO_COLORS.sparkles,
-    pointA: USER_LIGHT_HERO_COLORS.pointA,
-    pointB: USER_LIGHT_HERO_COLORS.pointB,
-    pointSpot: USER_LIGHT_HERO_COLORS.pointSpot,
-    nodeColors: [
-      USER_LIGHT_HERO_COLORS.node1,
-      USER_LIGHT_HERO_COLORS.node2,
-      USER_LIGHT_HERO_COLORS.node3,
-      USER_LIGHT_HERO_COLORS.node4,
-      USER_LIGHT_HERO_COLORS.node5
-    ],
-    chipBorder: USER_LIGHT_HERO_COLORS.chipBorder,
-    chipBackground: USER_LIGHT_HERO_COLORS.chipBackground,
-    chipText: USER_LIGHT_HERO_COLORS.chipText,
-    chipShadow: USER_LIGHT_HERO_COLORS.chipShadow
+    core: "#E8EDF7",
+    coreGradient: ["#F3F7FF", "#DCEBFF", "#CDE3FF"],
+    coreEmissive: "#A8C7FF",
+    shell: "#AFC8F8",
+    sparkles: "#FFFFFF",
+    pointA: "#B8A7FF",
+    pointB: "#9EE7FF",
+    pointSpot: "#FFFFFF",
+    nodeColors: ["#9DD6FF", "#C7B8FF", "#A7E5FF", "#FFD0E1", "#BCE7C6", "#FFD8A8"],
+    iconGlow: "drop-shadow(0 0 6px rgba(255,255,255,0.55)) drop-shadow(0 0 12px rgba(148,163,184,0.22))",
+    awsColor: "#FF9900",
+    kafkaColor: "#111111",
+    mysqlColor: "#3D6F8F"
   }
 };
 
 const HeroMesh = ({ palette }: { palette: HeroPalette }) => {
   const coreRef = useRef<THREE.Mesh>(null);
   const shellRef = useRef<THREE.Mesh>(null);
+
   const gradientTexture = useMemo(() => {
     const canvas = document.createElement("canvas");
     canvas.width = 32;
     canvas.height = 512;
 
     const context = canvas.getContext("2d");
-    if (!context) {
-      return null;
-    }
+    if (!context) return null;
 
     const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
     gradient.addColorStop(0, palette.coreGradient[0]);
@@ -134,9 +102,7 @@ const HeroMesh = ({ palette }: { palette: HeroPalette }) => {
   }, [palette.coreGradient]);
 
   useEffect(() => {
-    return () => {
-      gradientTexture?.dispose();
-    };
+    return () => gradientTexture?.dispose();
   }, [gradientTexture]);
 
   useFrame((state) => {
@@ -176,33 +142,116 @@ const HeroMesh = ({ palette }: { palette: HeroPalette }) => {
     </group>
   );
 };
+const buildTechNodes = (palette: HeroPalette): TechNode[] => [
+  {
+    label: "Kafka",
+    position: [0.15, 1.95, 0.95],
+    icon: <SiApachekafka size={28} color={palette.kafkaColor} />
+  },
+  {
+    label: "Java",
+    position: [-1.55, 1.15, 1.1],
+    icon: <FaJava size={28} color="#EA2D2E" />
+  },
+  {
+    label: "TypeScript",
+    position: [1.45, 1.1, 1.05],
+    icon: <SiTypescript size={27} color="#3178C6" />
+  },
+  {
+    label: "Spring Boot",
+    position: [-1.95, 0.15, 0.45],
+    icon: <SiSpringboot size={29} color="#6DB33F" />
+  },
+  {
+    label: "MySQL",
+    position: [1.75, 0.2, 0.25],
+    icon: <SiMysql size={30} color={palette.mysqlColor} />
+  },
+  {
+    label: "Redis",
+    position: [-1.45, -1.05, 0.85],
+    icon: <SiRedis size={27} color="#DC382D" />
+  },
+  {
+    label: "Postman",
+    position: [-.6, -1.5, 1],
+    icon: <SiPostman size={29} color="#FF6C37" />
+  },
+  {
+    label: "Docker",
+    position: [0.95, -1.55, 0.95],
+    icon: <SiDocker size={30} color="#2496ED" />
+  },
+  {
+    label: "EC2",
+    position: [1.75, -0.95, 0.75],
+    icon: (
+      <div className="flex items-center gap-1">
+        <FaAws size={20} color={palette.awsColor} />
+        <span
+          className="text-[10px] font-bold tracking-wide"
+          style={{ color: palette.awsColor }}
+        >
+          EC2
+        </span>
+      </div>
+    )
+  },
+  {
+    label: "S3",
+    position: [1.0, 1.75, -0.2],
+    icon: (
+      <div className="flex items-center gap-1">
+        <FaAws size={20} color={palette.awsColor} />
+        <span
+          className="text-[10px] font-bold tracking-wide"
+          style={{ color: palette.awsColor }}
+        >
+          S3
+        </span>
+      </div>
+    )
+  }
+];
 
 const FloatingNodes = ({ palette }: { palette: HeroPalette }) => {
+  const techNodes = buildTechNodes(palette);
+
   return (
     <group>
       {techNodes.map((node, index) => (
-        <Float key={node.label} speed={1.4} rotationIntensity={0.75} floatIntensity={1.1}>
+        <Float
+           key={node.label}
+  speed={1 + (index % 3) * 0.18}
+  rotationIntensity={0.5}
+  floatIntensity={0.75}
+        >
           <group position={node.position}>
             <mesh>
-              <dodecahedronGeometry args={[0.18, 0]} />
+              <dodecahedronGeometry args={[0.14, 0]} />
               <meshStandardMaterial
                 color={palette.nodeColors[index % palette.nodeColors.length]}
                 emissive={palette.nodeColors[index % palette.nodeColors.length]}
-                emissiveIntensity={0.45}
+                emissiveIntensity={0.22}
+                transparent
+                opacity={0.08}
               />
             </mesh>
-            <Html distanceFactor={8} center>
-              <span
-                className="rounded-full px-2 py-1 text-[10px] font-semibold tracking-wide"
+
+            <Html distanceFactor={7} center>
+              <div
+                title={node.label}
+                className="flex items-center justify-center transition-transform duration-300 hover:scale-110"
                 style={{
-                  border: `1px solid ${palette.chipBorder}`,
-                  background: palette.chipBackground,
-                  color: palette.chipText,
-                  boxShadow: `0 0 12px ${palette.chipShadow}`
+                  minWidth: 28,
+                  minHeight: 28,
+                  background: "transparent",
+                  filter: palette.iconGlow
                 }}
               >
-                {node.label}
-              </span>
+                {node.icon}
+              </div>
             </Html>
           </group>
         </Float>
@@ -218,7 +267,7 @@ export const HeroScene = () => {
   return (
     <div className="h-full w-full">
       <Canvas
-        camera={{ position: [0, 0, 5.6], fov: 48 }}
+        camera={{ position: [0, 0, 5.9], fov: 48 }}
         dpr={[1, 1.45]}
         performance={{ min: 0.7 }}
         gl={{ antialias: false, powerPreference: "high-performance" }}
@@ -233,6 +282,7 @@ export const HeroScene = () => {
         <Float speed={1.3} rotationIntensity={0.3} floatIntensity={0.65}>
           <HeroMesh palette={palette} />
         </Float>
+
         <FloatingNodes palette={palette} />
 
         <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.42} />

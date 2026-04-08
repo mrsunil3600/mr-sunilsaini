@@ -8,171 +8,206 @@ export const FALLBACK_CONTENT: PortfolioContent = {
     { label: "Experience", href: "#experience" },
     { label: "Projects", href: "#projects" },
     { label: "Stack", href: "#tech-stack" },
-    { label: "Awards", href: "#achievements" },
+    { label: "Achievements", href: "#achievements" },
     { label: "Contact", href: "#contact" }
   ],
+
   stats: [
-    { label: "Years Experience", value: "6+" },
-    { label: "Production Systems", value: "20+" },
-    { label: "Global Users Served", value: "5M+" }
+    {
+      value: "5+",
+      label: "Backend Projects"
+    },
+    {
+      value: "Kafka + WebSocket",
+      label: "Real-time Systems"
+    },
+    {
+      value: "JWT + OAuth2",
+      label: "Security Systems"
+    }
   ],
+
   profile: {
-    name: "Mr. Sunil",
-    title: "Software Engineer",
+    name: "Sunil Saini",
+    title: "Software Engineer (Backend)",
     tagline:
-      "I design resilient, high-performance products where strong architecture meets polished user experience.",
+      "Backend developer focused on Spring Boot, WebSockets, Redis, and Kafka — building real-time and scalable systems.",
     location: "Haryana, India",
     email: "mrsunilsaini3600@gmail.com",
     summary:
-      "Software Engineer focused on distributed systems, frontend architecture, and cloud-native delivery with measurable business impact.",
+      "B.Tech Computer Science student with hands-on experience in building real-time and distributed backend systems. Skilled in Spring Boot, Kafka, Redis, and WebSockets, with a strong focus on system design, scalability, and clean architecture.",
     yearsExperience: "Fresher",
-    availability: "Open to  Software Developer  and staff-track roles"
+    availability: "Open to Software Developer roles"
   },
+
   about: [
-    "Across the Last 1 year, I have shipped full-stack platforms from zero to scale across fintech, SaaS analytics, and developer tooling.",
-    "I combine product thinking with engineering rigor: architecture decisions tied to latency, reliability, and maintainability goals.",
-    "My current work centers on platform modernization, AI-assisted workflows, and frontend systems that remain fast and stable at scale."
-  ],
+    "I am a backend-focused Software Engineer currently pursuing B.Tech in Computer Science. I enjoy building scalable systems and solving real-world backend problems.",
+    "My experience includes implementing secure authentication systems using Spring Security with JWT and OAuth2, and designing APIs with proper architecture and performance considerations.",
+    ],
+
   skillGroups: [
     {
-      category: "Frontend Engineering",
+      category: "Backend & Core",
       items: [
-        { name: "React / Next.js", level: 95, icon: "R" },
-        { name: "TypeScript", level: 93, icon: "TS" },
-        { name: "Design Systems", level: 90, icon: "DS" },
-        { name: "Performance Optimization", level: 89, icon: "PO" }
+        { name: "Java", level: 90, icon: "J" },
+        { name: "Spring Boot", level: 92, icon: "SB" },
+        { name: "Spring Security", level: 88, icon: "SS" },
+        { name: "Hibernate / JPA", level: 85, icon: "JPA" }
       ]
     },
     {
-      category: "Backend & Architecture",
+      category: "Systems & Messaging",
       items: [
-        { name: "SpringBoot", level: 92, icon: "N" },
-        { name: "System Design", level: 90, icon: "SD" },
-        { name: "Microservices", level: 87, icon: "MS" },
-        { name: "API Design", level: 91, icon: "API" }
+        { name: "Kafka", level: 80, icon: "K" },
+        { name: "Redis", level: 85, icon: "R" },
+        { name: "WebSocket", level: 90, icon: "WS" },
+        { name: "System Design", level: 82, icon: "SD" }
       ]
     },
     {
-      category: "Cloud & Delivery",
+      category: "Tools & Others",
       items: [
-        { name: "AWS", level: 88, icon: "AWS" },
-        { name: "Kubernetes", level: 82, icon: "K8" },
-        { name: "CI/CD", level: 90, icon: "CI" },
-        { name: "Observability", level: 86, icon: "OBS" }
+        { name: "MySQL", level: 88, icon: "SQL" },
+        { name: "MongoDB", level: 75, icon: "M" },
+        { name: "Docker", level: 70, icon: "D" },
+        { name: "Git / GitHub", level: 85, icon: "G" }
       ]
     }
   ],
+
   experience: [
     {
-      role: "Software Engineer",
-      company: "Vertex Cloud Systems",
-      period: "2023 - Present",
-      location: "Bengaluru (Hybrid)",
+      role: "Java Developer Intern",
+      company: "Aptron Solutions",
+      period: "June 2024 - July 2024",
+      location: "India",
       summary:
-        "Leading platform modernization for a multi-tenant analytics suite used by enterprise customers across APAC and EU.",
+        "Worked on Java-based applications focusing on backend logic and system design.",
       highlights: [
-        "Architected an event-driven ingestion pipeline reducing median data processing time by 38%.",
-        "Led a Next.js migration strategy that improved Lighthouse performance scores from 62 to 92.",
-        "Mentored a team of 5 engineers on architecture reviews, release quality, and incident handling."
+        "Developed a banking system using Java Servlet and MVC architecture.",
+        "Implemented transaction handling with ACID properties using logging mechanisms.",
+        "Worked on backend logic, request handling, and data flow management."
       ]
     },
     {
-      role: "Software Engineer II",
-      company: "NovaPay Labs",
-      period: "2021 - 2023",
+      role: "Java Developer Intern (Virtual)",
+      company: "Deloitte (Forage)",
+      period: "2024",
       location: "Remote",
       summary:
-        "Built core services and frontend modules for merchant onboarding, risk checks, and transaction reporting.",
+        "Completed a virtual internship focused on backend systems using Spring Boot.",
       highlights: [
-        "Delivered a workflow orchestration service handling 120K+ daily onboarding tasks.",
-        "Introduced typed API contracts and contract tests that reduced integration defects by 45%.",
-        "Designed dashboard rendering optimizations that cut first meaningful paint by 32%."
-      ]
-    },
-    {
-      role: "Software Engineer",
-      company: "BlueOrbit Technologies",
-      period: "2019 - 2021",
-      location: "Pune",
-      summary:
-        "Contributed to customer-facing portals and internal tools for subscription management and support operations.",
-      highlights: [
-        "Built reusable UI primitives adopted across 4 product lines.",
-        "Implemented backend caching and query tuning to reduce average response times by 41%.",
-        "Partnered with product and design to launch 10+ high-impact features in two years."
+        "Worked on Kafka integration for event-driven architecture.",
+        "Implemented H2 database usage with Spring Boot.",
+        "Gained understanding of microservices communication patterns."
       ]
     }
   ],
+
   projects: [
     {
-      name: "PulseOps Reliability Console",
+      name: "Real-time Chat Application (E2EE Ready)",
       description:
-        "An internal observability and incident response workspace for engineering teams with real-time service health monitoring.",
-      impact: "Reduced alert triage time by 52% and improved MTTR across 14 services.",
-      stack: ["Next.js", "TypeScript", "GraphQL", "Redis", "AWS"],
-      repoUrl: "https://github.com/placeholder/pulseops-console",
-      liveUrl: "https://pulseops-demo.example.dev"
+        "A real-time chat system using WebSocket and Redis with support for message persistence, caching, and cursor-based pagination.",
+      impact:
+        "Designed scalable messaging architecture with real-time communication and optimized message retrieval.",
+      stack: ["Spring Boot", "WebSocket", "Redis", "MySQL"],
+      repoUrl: "https://github.com/mrsunil3600",
+      liveUrl: ""
     },
     {
-      name: "LedgerFlow Reconciliation Engine",
+      name: "Kafka Notification Service",
       description:
-        "A high-throughput transaction reconciliation platform processing financial event streams with deterministic matching.",
-      impact: "Scaled from 2M to 11M records/day with sub-second query experience.",
-      stack: ["Node.js", "Kafka", "PostgreSQL", "Kubernetes", "React"],
-      repoUrl: "https://github.com/placeholder/ledgerflow",
-      liveUrl: "https://ledgerflow-demo.example.dev"
+        "Event-driven notification system supporting Email, Text, and App notifications using Kafka.",
+      impact:
+        "Implemented retry mechanism with dead-letter queue (DLT) for fault tolerance.",
+      stack: ["Spring Boot", "Kafka", "Microservices"],
+      repoUrl: "https://github.com/mrsunil3600",
+      liveUrl: ""
     },
     {
-      name: "Aurora Design System",
+      name: "Spring Security System",
       description:
-        "A component and token system that unified UI patterns across web properties and improved release consistency.",
-      impact: "Cut implementation effort for new UI screens by ~35% across product teams.",
-      stack: ["React", "Storybook", "Tailwind", "Motion", "Vite"],
-      repoUrl: "https://github.com/placeholder/aurora-ds",
-      liveUrl: "https://aurora-ds.example.dev"
+        "Comprehensive authentication system with JWT, OAuth2 (Google/GitHub), and Basic Authentication.",
+      impact:
+        "Handled secure authentication and authorization with multiple strategies.",
+      stack: ["Spring Boot", "Spring Security", "JWT", "OAuth2"],
+      repoUrl: "https://github.com/mrsunil3600",
+      liveUrl: ""
+    },
+    {
+      name: "AI Email Generator Extension",
+      description:
+        "Chrome extension integrated with Gemini API to generate email replies automatically.",
+      impact:
+        "Automated email drafting using AI, improving productivity.",
+      stack: ["Spring Boot", "Gemini API", "JavaScript"],
+      repoUrl: "https://github.com/mrsunil3600",
+      liveUrl: ""
     }
   ],
+
   techStack: [
     {
       category: "Languages",
-      tools: ["TypeScript", "JavaScript", "Python", "SQL", "Go"]
+      tools: ["Java", "Python", "C", "SQL"]
     },
     {
       category: "Frameworks",
-      tools: ["Next.js", "React", "Node.js", "Express", "Fastify"]
+      tools: ["Spring Boot", "Spring Security", "Hibernate", "React (Basic)"]
     },
     {
       category: "Data & Messaging",
-      tools: ["PostgreSQL", "MongoDB", "Redis", "Kafka", "Elasticsearch"]
+      tools: ["MySQL", "MongoDB", "Redis", "Kafka"]
     },
     {
-      category: "Cloud & DevOps",
-      tools: ["AWS", "Docker", "Kubernetes", "GitHub Actions", "Terraform"]
+      category: "Tools",
+      tools: ["Docker", "Git", "GitHub", "Postman"]
     }
   ],
-  achievements: [ 
+
+  achievements: [
     {
-      title: "AWS Certified Solutions Architect - Associate",
-      issuer: "Amazon Web Services",
+      title: "Java Developer Internship",
+      issuer: "Aptron Solutions",
       year: "2024",
-      detail: "Focused on secure, resilient architecture patterns for distributed cloud applications."
+      detail: "Completed hands-on training in Java backend development."
     },
     {
-      title: "Top Engineering Impact Award",
-      issuer: "Vertex Cloud Systems",
-      year: "2025",
-      detail: "Recognized for leading reliability and performance initiatives across critical product surfaces."
+      title: "Deloitte Virtual Internship",
+      issuer: "Forage",
+      year: "2024",
+      detail: "Worked on Spring Boot and Kafka-based backend tasks."
     },
     {
-      title: "Google Professional Cloud DevOps Engineer",
-      issuer: "Google Cloud",
+      title: "C Programming Certification",
+      issuer: "Calicut University",
       year: "2023",
-      detail: "Validated deep expertise in SRE principles, release automation, and monitoring strategy."
+      detail: "Strong foundation in programming using C."
+    },
+    {
+      title: "Cyber Security Certification",
+      issuer: "Dr. B.R. Ambedkar University",
+      year: "2023",
+      detail: "Basic knowledge of cyber security concepts."
     }
   ],
+
   socials: [
-    { label: "GitHub", href: "https://github.com/placeholder", handle: "@placeholder" },
-    { label: "LinkedIn", href: "https://linkedin.com/in/placeholder", handle: "in/placeholder" },
-    { label: "Email", href: "mailto:arjun.m@example.dev", handle: "arjun.m@example.dev" }
+    {
+      label: "GitHub",
+      href: "https://github.com/mrsunil3600",
+      handle: "@mrsunil3600"
+    },
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/mr-sunil-1a12a4285/",
+      handle: "Sunil Saini"
+    },
+    {
+      label: "Email",
+      href: "mailto:mrsunilsaini3600@gmail.com",
+      handle: "mrsunilsaini3600@gmail.com"
+    }
   ]
 };

@@ -91,13 +91,12 @@ export const ContactSection = ({ profile, socials }: ContactSectionProps) => {
       <div className="grid gap-6 lg:grid-cols-[1fr_0.95fr]">
         <Reveal className="cyber-panel rounded-3xl p-6 sm:p-7">
           <div className="space-y-4">
-            <p className="text-sm text-slate-300 sm:text-base">Reach out for collaborations, consulting, or full-time opportunities.</p>
+            <p className="text-sm text-slate-300 sm:text-base">Feel free to reach out for opportunities, collaborations, or backend engineering roles.</p>
             <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 text-accent-300 transition hover:text-accent-200">
               <Mail size={16} />
               {profile.email}
             </a>
-            <p className="text-xs text-slate-500">Data source toggle: `NEXT_PUBLIC_ENABLE_REMOTE_CONTENT`</p>
-          </div>
+            </div>
 
           <form className="mt-6 space-y-4" onSubmit={onSubmit}>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -170,14 +169,7 @@ export const ContactSection = ({ profile, socials }: ContactSectionProps) => {
             ))}
           </div>
 
-          <div className="mt-6 rounded-2xl border border-accent-300/20 bg-ink-950/60 p-4">
-            <p className="text-xs uppercase tracking-[0.15em] text-slate-500">Configured Data Endpoints</p>
-            <ul className="mt-3 space-y-2 text-xs text-slate-400">
-              <li className="truncate">profile: {API_CONFIG.endpoints.profile}</li>
-              <li className="truncate">projects: {API_CONFIG.endpoints.projects}</li>
-              <li className="truncate">experience: {API_CONFIG.endpoints.experience}</li>
-            </ul>
-          </div>
+          
         </Reveal>
       </div>
     </SectionShell>
