@@ -22,19 +22,6 @@ type AboutSectionProps = {
 };
 
 export const AboutSection = ({ profile, about }: AboutSectionProps) => {
-  const sceneContainerRef = useRef<HTMLDivElement>(null);
-  const isSceneInView = useInView(sceneContainerRef, { once: true, margin: "220px 0px" });
-  const [shouldMountAvatar, setShouldMountAvatar] = useState(false);
-
-  useEffect(() => {
-    if (!isSceneInView || shouldMountAvatar) {
-      return;
-    }
-
-    const timeoutId = window.setTimeout(() => setShouldMountAvatar(true), 120);
-    return () => window.clearTimeout(timeoutId);
-  }, [isSceneInView, shouldMountAvatar]);
-
   return (
     <SectionShell
       id="about"
@@ -78,28 +65,8 @@ export const AboutSection = ({ profile, about }: AboutSectionProps) => {
         </Reveal>
 
         <Reveal className="cyber-panel rounded-3xl p-4 sm:p-6" delay={0.08}>
-          <div
-            ref={sceneContainerRef}
-            className="universe-border h-[340px] w-full overflow-hidden rounded-2xl bg-gradient-to-b from-accent-500/10 via-ink-900/35 to-ink-900/65 sm:h-[420px]"
-          >
-            {isSceneInView && shouldMountAvatar ? (
-              <AvatarScene />
-            ) : (
-              <div className="relative h-full w-full">
-                <Image
-                  src="/my.jpg"
-                  alt={`${profile.name} profile photo`}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 640px) 100vw, 40vw"
-                  priority={false}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
-                <span className="absolute bottom-4 left-4 rounded-full border border-accent-300/35 bg-ink-900/70 px-3 py-1 text-xs text-slate-100">
-                  Loading 3D model...
-                </span>
-              </div>
-            )}
+          <div className="universe-border h-[340px] w-full overflow-hidden rounded-2xl bg-gradient-to-b from-accent-500/10 via-ink-900/35 to-ink-900/65 sm:h-[420px]">
+            <AvatarScene />
           </div>
         </Reveal>
       </div>

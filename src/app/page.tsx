@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 import { usePortfolioContent } from "@/hooks/use-portfolio-content";
@@ -16,12 +17,16 @@ import { BackgroundAura } from "@/components/layout/background-aura";
 import { FloatingNav } from "@/components/layout/floating-nav";
 import { Footer } from "@/components/layout/footer";
 import { ScrollProgress } from "@/components/layout/scroll-progress";
+import { SiteLoader } from "@/components/ui/site-loader";
 
 export default function HomePage() {
   const { content, isLoading } = usePortfolioContent();
+  const [isPreloaded, setIsPreloaded] = useState(false);
 
   return (
     <main className="relative overflow-hidden">
+      <SiteLoader onComplete={() => setIsPreloaded(true)} />
+
       <ScrollProgress />
       <BackgroundAura />
       <FloatingNav items={content.navItems} />
@@ -32,7 +37,11 @@ export default function HomePage() {
         </div>
       ) : null}
 
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isPreloaded ? 1 : 0 }}
+        transition={{ duration: 0.6 }}
+      >
         <HeroSection profile={content.profile} stats={content.stats} socials={content.socials} />
         <AboutSection profile={content.profile} about={content.about} />
         <SkillsSection skillGroups={content.skillGroups} />

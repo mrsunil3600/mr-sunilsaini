@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect, useMemo, useRef } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Html, OrbitControls, Sparkles } from "@react-three/drei";
 import * as THREE from "three";
@@ -72,7 +72,7 @@ const palettes: Record<SiteTheme, HeroPalette> = {
   }
 };
 
-const HeroMesh = ({ palette }: { palette: HeroPalette }) => {
+const HeroMesh = ({ palette, scale = 1 }: { palette: HeroPalette; scale?: number }) => {
   const coreRef = useRef<THREE.Mesh>(null);
   const shellRef = useRef<THREE.Mesh>(null);
 
@@ -120,7 +120,7 @@ const HeroMesh = ({ palette }: { palette: HeroPalette }) => {
   });
 
   return (
-    <group>
+    <group scale={scale}>
       <mesh ref={coreRef}>
         <torusKnotGeometry args={[1.08, 0.31, 132, 24]} />
         <meshPhysicalMaterial
@@ -142,94 +142,98 @@ const HeroMesh = ({ palette }: { palette: HeroPalette }) => {
     </group>
   );
 };
-const buildTechNodes = (palette: HeroPalette): TechNode[] => [
-  {
-    label: "Kafka",
-    position: [0.15, 1.95, 0.95],
-    icon: <SiApachekafka size={28} color={palette.kafkaColor} />
-  },
-  {
-    label: "Java",
-    position: [-1.55, 1.15, 1.1],
-    icon: <FaJava size={28} color="#EA2D2E" />
-  },
-  {
-    label: "TypeScript",
-    position: [1.45, 1.1, 1.05],
-    icon: <SiTypescript size={27} color="#3178C6" />
-  },
-  {
-    label: "Spring Boot",
-    position: [-1.95, 0.15, 0.45],
-    icon: <SiSpringboot size={29} color="#6DB33F" />
-  },
-  {
-    label: "MySQL",
-    position: [1.75, 0.2, 0.25],
-    icon: <SiMysql size={30} color={palette.mysqlColor} />
-  },
-  {
-    label: "Redis",
-    position: [-1.45, -1.05, 0.85],
-    icon: <SiRedis size={27} color="#DC382D" />
-  },
-  {
-    label: "Postman",
-    position: [-.6, -1.5, 1],
-    icon: <SiPostman size={29} color="#FF6C37" />
-  },
-  {
-    label: "Docker",
-    position: [0.95, -1.55, 0.95],
-    icon: <SiDocker size={30} color="#2496ED" />
-  },
-  {
-    label: "EC2",
-    position: [1.75, -0.95, 0.75],
-    icon: (
-      <div className="flex items-center gap-1">
-        <FaAws size={20} color={palette.awsColor} />
-        <span
-          className="text-[10px] font-bold tracking-wide"
-          style={{ color: palette.awsColor }}
-        >
-          EC2
-        </span>
-      </div>
-    )
-  },
-  {
-    label: "S3",
-    position: [1.0, 1.75, -0.2],
-    icon: (
-      <div className="flex items-center gap-1">
-        <FaAws size={20} color={palette.awsColor} />
-        <span
-          className="text-[10px] font-bold tracking-wide"
-          style={{ color: palette.awsColor }}
-        >
-          S3
-        </span>
-      </div>
-    )
-  }
-];
 
-const FloatingNodes = ({ palette }: { palette: HeroPalette }) => {
-  const techNodes = buildTechNodes(palette);
+const buildTechNodes = (palette: HeroPalette, isMobile: boolean): TechNode[] => {
+  const nodeScale = isMobile ? 0.92 : 1;
+  return [
+    {
+      label: "Kafka",
+      position: [0.12 * nodeScale, 1.8 * nodeScale, 0.85 * nodeScale],
+      icon: <SiApachekafka size={isMobile ? 25 : 28} color={palette.kafkaColor} />
+    },
+    {
+      label: "Java",
+      position: [-1.45 * nodeScale, 1.1 * nodeScale, 0.95 * nodeScale],
+      icon: <FaJava size={isMobile ? 25 : 28} color="#EA2D2E" />
+    },
+    {
+      label: "TypeScript",
+      position: [1.35 * nodeScale, 1.05 * nodeScale, 0.95 * nodeScale],
+      icon: <SiTypescript size={isMobile ? 24 : 27} color="#3178C6" />
+    },
+    {
+      label: "Spring Boot",
+      position: [-1.75 * nodeScale, 0.15 * nodeScale, 0.4 * nodeScale],
+      icon: <SiSpringboot size={isMobile ? 25 : 29} color="#6DB33F" />
+    },
+    {
+      label: "MySQL",
+      position: [1.55 * nodeScale, 0.18 * nodeScale, 0.25 * nodeScale],
+      icon: <SiMysql size={isMobile ? 26 : 30} color={palette.mysqlColor} />
+    },
+    {
+      label: "Redis",
+      position: [-1.35 * nodeScale, -0.95 * nodeScale, 0.75 * nodeScale],
+      icon: <SiRedis size={isMobile ? 24 : 27} color="#DC382D" />
+    },
+    {
+      label: "Postman",
+      position: [-0.55 * nodeScale, -1.4 * nodeScale, 0.9 * nodeScale],
+      icon: <SiPostman size={isMobile ? 25 : 29} color="#FF6C37" />
+    },
+    {
+      label: "Docker",
+      position: [0.85 * nodeScale, -1.4 * nodeScale, 0.85 * nodeScale],
+      icon: <SiDocker size={isMobile ? 26 : 30} color="#2496ED" />
+    },
+    {
+      label: "EC2",
+      position: [1.55 * nodeScale, -0.9 * nodeScale, 0.65 * nodeScale],
+      icon: (
+        <div className="flex items-center gap-1">
+          <FaAws size={isMobile ? 18 : 20} color={palette.awsColor} />
+          <span
+            className="text-[9px] sm:text-[10px] font-bold tracking-wide"
+            style={{ color: palette.awsColor }}
+          >
+            EC2
+          </span>
+        </div>
+      )
+    },
+    {
+      label: "S3",
+      position: [0.9 * nodeScale, 1.65 * nodeScale, -0.15 * nodeScale],
+      icon: (
+        <div className="flex items-center gap-1">
+          <FaAws size={isMobile ? 18 : 20} color={palette.awsColor} />
+          <span
+            className="text-[9px] sm:text-[10px] font-bold tracking-wide"
+            style={{ color: palette.awsColor }}
+          >
+            S3
+          </span>
+        </div>
+      )
+    }
+  ];
+};
+
+const FloatingNodes = ({ palette, isMobile }: { palette: HeroPalette; isMobile: boolean }) => {
+  const techNodes = buildTechNodes(palette, isMobile);
 
   return (
     <group>
       {techNodes.map((node, index) => (
         <Float
-           key={node.label}
-  speed={1 + (index % 3) * 0.18}
-  rotationIntensity={0.5}
-  floatIntensity={0.75}
+          key={node.label}
+          speed={1 + (index % 3) * 0.18}
+          rotationIntensity={0.5}
+          floatIntensity={0.75}
         >
           <group position={node.position}>
             <mesh>
-              <dodecahedronGeometry args={[0.14, 0]} />
+              <dodecahedronGeometry args={[isMobile ? 0.13 : 0.14, 0]} />
               <meshStandardMaterial
                 color={palette.nodeColors[index % palette.nodeColors.length]}
                 emissive={palette.nodeColors[index % palette.nodeColors.length]}
@@ -244,8 +248,8 @@ const FloatingNodes = ({ palette }: { palette: HeroPalette }) => {
                 title={node.label}
                 className="flex items-center justify-center transition-transform duration-300 hover:scale-110"
                 style={{
-                  minWidth: 28,
-                  minHeight: 28,
+                  minWidth: isMobile ? 25 : 28,
+                  minHeight: isMobile ? 25 : 28,
                   background: "transparent",
                   filter: palette.iconGlow
                 }}
@@ -263,12 +267,22 @@ const FloatingNodes = ({ palette }: { palette: HeroPalette }) => {
 export const HeroScene = () => {
   const theme = useSiteTheme();
   const palette = palettes[theme];
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className="h-full w-full">
       <Canvas
         camera={{ position: [0, 0, 5.9], fov: 48 }}
-        dpr={[1, 1.45]}
+        dpr={[1, 1.35]}
         performance={{ min: 0.7 }}
         gl={{ antialias: false, powerPreference: "high-performance" }}
       >
@@ -277,13 +291,13 @@ export const HeroScene = () => {
         <pointLight position={[-3, -2, 1]} intensity={24} color={palette.pointB} />
         <spotLight position={[0, 6, 0]} intensity={20} angle={0.26} penumbra={0.9} color={palette.pointSpot} />
 
-        <Sparkles count={48} speed={0.35} size={1.2} scale={[7, 5, 4]} color={palette.sparkles} />
+        <Sparkles count={isMobile ? 28 : 36} speed={0.35} size={1.2} scale={[7, 5, 4]} color={palette.sparkles} />
 
         <Float speed={1.3} rotationIntensity={0.3} floatIntensity={0.65}>
-          <HeroMesh palette={palette} />
+          <HeroMesh palette={palette} scale={isMobile ? 0.98 : 1} />
         </Float>
 
-        <FloatingNodes palette={palette} />
+        <FloatingNodes palette={palette} isMobile={isMobile} />
 
         <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.42} />
       </Canvas>

@@ -1,16 +1,20 @@
 "use client";
 
-import { Suspense, useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { ContactShadows, OrbitControls, useAnimations, useGLTF, Center } from "@react-three/drei";
 import * as THREE from "three";
 
 import { useSiteTheme } from "@/hooks/use-site-theme";
+import { getOrFetchModelBlobUrl } from "@/lib/model-cache";
 
-const AvatarModel = () => {
+// Enable Draco loader for compressed GLTF models
+useGLTF.setDecoderPath("https://www.gstatic.com/draco/versioned/decoders/1.5.7/");
+
+const AvatarModel = ({ modelUrl }: { modelUrl: string }) => {
   const groupRef = useRef<THREE.Group>(null);
 
-  const { scene, animations } = useGLTF("/MyModel1.glb");
+  const { scene, animations } = useGLTF(modelUrl);
   const { actions } = useAnimations(animations, groupRef);
 
   useEffect(() => {
@@ -96,6 +100,19 @@ useGLTF.preload("/MyModel1.glb");
 export const AvatarScene = () => {
   const theme = useSiteTheme();
   const isLightTheme = theme === "light";
+  const [modelUrl, setModelUrl] = useState<string>("/MyModel1.glb");
+
+  useEffect(() => {
+    let isMounted = true;
+    getOrFetchModelBlobUrl("/MyModel1.glb").then((cachedUrl) => {
+      if (isMounted && cachedUrl) {
+        setModelUrl(cachedUrl);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <div className="relative h-full w-full overflow-hidden rounded-3xl">
@@ -115,7 +132,7 @@ export const AvatarScene = () => {
 
       <Canvas
         camera={{ position: [0, 0.50, 2.18], fov: 28 }}
-        dpr={[1, 1.4]}
+        dpr={[1, 1.35]}
         performance={{ min: 0.7 }}
         gl={{ toneMapping: THREE.ACESFilmicToneMapping, antialias: false, powerPreference: "high-performance" }}
         onCreated={({ gl }) => {
@@ -135,11 +152,11 @@ export const AvatarScene = () => {
         <pointLight position={[0, 1.0, 2.4]} intensity={4.2} color={isLightTheme ? "#b56a80" : "#c3dbff"} />
 
         <Suspense fallback={null}>
-          <AvatarModel />
+          <AvatarModel modelUrl={modelUrl} />
           <SmokeOverlay opacity={isLightTheme ? 0.07 : 0.11} />
         </Suspense>
 
-        <ContactShadows position={[0, -1.08, 0]} opacity={0.34} width={2.2} height={2.2} blur={1.35} far={2} />
+        <ContactShadows position={[0, -1.08, 0]} opacity={0.34} width={2.2} height={2.2} blur={1.35} far={2} frames={1} />
         <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
       </Canvas>
     </div>
