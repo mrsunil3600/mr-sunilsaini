@@ -268,6 +268,8 @@ export const HeroScene = () => {
   const theme = useSiteTheme();
   const palette = palettes[theme];
   const [isMobile, setIsMobile] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(true);
 
   useEffect(() => {
     const handleResize = () => {
@@ -278,9 +280,22 @@ export const HeroScene = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { rootMargin: "150px" }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="h-full w-full">
+    <div ref={containerRef} className="h-full w-full">
       <Canvas
+        frameloop={isInView ? "always" : "never"}
         camera={{ position: [0, 0, 5.9], fov: 48 }}
         dpr={[1, 1.35]}
         performance={{ min: 0.7 }}

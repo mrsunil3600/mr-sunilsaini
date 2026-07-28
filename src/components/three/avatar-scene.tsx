@@ -101,6 +101,8 @@ export const AvatarScene = () => {
   const theme = useSiteTheme();
   const isLightTheme = theme === "light";
   const [modelUrl, setModelUrl] = useState<string>("/MyModel1.glb");
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
@@ -114,8 +116,20 @@ export const AvatarScene = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { rootMargin: "150px" }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-3xl">
+    <div ref={containerRef} className="relative h-full w-full overflow-hidden rounded-3xl">
       <div
         className={`absolute inset-0 ${
           isLightTheme
@@ -131,6 +145,7 @@ export const AvatarScene = () => {
       />
 
       <Canvas
+        frameloop={isInView ? "always" : "never"}
         camera={{ position: [0, 0.50, 2.18], fov: 28 }}
         dpr={[1, 1.35]}
         performance={{ min: 0.7 }}
